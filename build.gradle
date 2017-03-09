@@ -33,7 +33,23 @@ allprojects {
 
     def versionInfo = ZoltuGitVersioning.versionInfo
     group = 'ru.dreamkas.utils'
-    version = "${versionInfo.major}.${versionInfo.minor}.${versionInfo.commitCount}-${versionInfo.tags}"
+    version = "${versionInfo.major}.${versionInfo.minor}"
+    if (versionInfo.tags != null) {
+        version += ".0-${versionInfo.tags}"
+    }
+    if (versionInfo.commitCount > 0 || versionInfo.tags == null) {
+        version += ".${versionInfo.commitCount}"
+    }
+
+    if (versionInfo.tags == null) {
+        version += ".${versionInfo.commitCount}"
+    } else {
+        version += ".0-${versionInfo.tags}"
+        if (versionInfo.commitCount > 0) {
+            version += ".${versionInfo.commitCount}"
+        }
+
+    }
 }
 
 
