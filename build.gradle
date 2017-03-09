@@ -38,7 +38,6 @@ allprojects {
     if (versionInfo.tags != null) {
         version += ".0-${versionInfo.tags}"
     }
-    println version
     if (versionInfo.commitCount > 0 || versionInfo.tags == null) {
         version += ".${versionInfo.commitCount}"
     }
@@ -69,7 +68,7 @@ subprojects {
         user = 'happyfat'
         key = '856f77d5b1ae8e84f1ef126f1b284b9b878a977e'
         publications = ['StartUtilsPublication']
-        publish = true
+        publish = false
         override = true
         pkg {
             repo = 'start-utils'
