@@ -1,0 +1,82 @@
+ext {
+    jupiter_version = "5.0.0-M3"
+    log4j_version = "1.7.24"
+}
+
+buildscript {
+    repositories {
+        jcenter()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3"
+        classpath "gradle.plugin.com.zoltu.gradle.plugin:git-versioning:3.0.2"
+    }
+}
+
+apply plugin: "com.zoltu.git-versioning"
+
+allprojects {
+    repositories {
+        jcenter()
+    }
+
+    apply plugin: 'maven'
+    apply plugin: 'maven-publish'
+    apply plugin: 'java'
+    apply plugin: 'idea'
+    apply plugin: 'com.jfrog.bintray'
+
+    sourceCompatibility = 1.8
+
+    def versionInfo = ZoltuGitVersioning.versionInfo
+    group = 'ru.dreamkas.utils'
+    version = "${versionInfo.major}.${versionInfo.minor}.${versionInfo.commitCount}-${versionInfo.tags}"
+}
+
+
+subprojects {
+    dependencies {
+        compile group: 'org.slf4j', name: 'slf4j-api', version: log4j_version
+        compile group: 'org.slf4j', name: 'slf4j-log4j12', version: log4j_version
+        testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: jupiter_version
+        testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: jupiter_version
+        testCompile group: 'org.mockito', name: 'mockito-all', version: '1.10.19'
+    }
+
+    publishing {
+        publications {
+            StartUtilsPublication(MavenPublication) {
+                from components.java
+                groupId project.getGroup()
+                artifactId project.getName()
+                version project.getVersion()
+            }
+        }
+    }
+
+    bintray {
+        user = 'happyfat'
+        key = '856f77d5b1ae8e84f1ef126f1b284b9b878a977e'
+        publications = ['StartUtilsPublication']
+        publish = true
+        override = true
+        pkg {
+            repo = 'start-utils'
+            name = project.getName()
+            userOrg = 'dreamkas'
+            licenses = ['MIT']
+            vcsUrl = 'https://github.com/dreamkas/start-utils.git'
+            publicDownloadNumbers = true
+            version {
+                name = project.getVersion()
+            }
+        }
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '3.2.1'
+}
