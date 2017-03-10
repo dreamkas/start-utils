@@ -57,6 +57,7 @@ class PatternTest {
         cases.put(Pattern.YYYYMMDD, "20161231");
         cases.put(Pattern.YYYYMMDD_HHmm_dash_colon, "2016-12-31 01:02");
         cases.put(Pattern.YYYYMMDDHHmmss, "20161231010203");
+        cases.put(Pattern.YYYYMMDDHHmm_T, "20161231T0102");
         cases.put(Pattern.YYMMDDHHMM, "1612310102");
 
         return makeTests(DECEMBER_31_NIGHT_UTC_PLUS_10, cases);
@@ -89,6 +90,7 @@ class PatternTest {
         cases.put(Pattern.YYYYMMDD, "20160102");
         cases.put(Pattern.YYYYMMDD_HHmm_dash_colon, "2016-01-02 13:23");
         cases.put(Pattern.YYYYMMDDHHmmss, "20160102132334");
+        cases.put(Pattern.YYYYMMDDHHmm_T, "20160102T1323");
         cases.put(Pattern.YYMMDDHHMM, "1601021323");
 
         return makeTests(JAN_2_DAY_UTC_MINUS_3, cases);
