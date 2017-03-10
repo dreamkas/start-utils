@@ -115,6 +115,7 @@ public enum Pattern {
      * ГГГГММДДЧЧммсс
      */
     YYYYMMDDHHmmss("yyyyMMddHHmmss"),
+    YYYYMMDDHHmm_T("yyyyMMdd'T'HHmm"),
     /**
      * ГГММДДЧЧмм
      */
