@@ -1,0 +1,33 @@
+apply plugin: 'maven'
+apply plugin: 'maven-publish'
+apply plugin: 'com.jfrog.bintray'
+
+publishing {
+    publications {
+        StartUtilsPublication(MavenPublication) {
+            from components.java
+            groupId project.getGroup()
+            artifactId project.getName()
+            version project.getVersion()
+        }
+    }
+}
+
+bintray {
+    user = 'happyfat'
+    key = '856f77d5b1ae8e84f1ef126f1b284b9b878a977e'
+    publications = ['StartUtilsPublication']
+    publish = true
+    override = true
+    pkg {
+        repo = 'start-utils'
+        name = project.getName()
+        userOrg = 'dreamkas'
+        licenses = ['MIT']
+        vcsUrl = 'https://github.com/dreamkas/start-utils.git'
+        publicDownloadNumbers = true
+        version {
+            name = project.getVersion()
+        }
+    }
+}
