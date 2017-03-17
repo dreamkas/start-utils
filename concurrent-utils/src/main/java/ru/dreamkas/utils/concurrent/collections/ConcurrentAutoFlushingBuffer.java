@@ -35,14 +35,14 @@ public class ConcurrentAutoFlushingBuffer<T> {
     }
 
     public void immediatelyFlush() {
-        Executors.newCachedThreadPool().execute(this::flush);
+        executor.execute(this::flush);
     }
 
     public void shutdown() {
         executor.shutdown();
     }
 
-    private void flush() {
+    private synchronized void flush() {
         List<T> data = bucket.stream().limit(packetSize == null ? bucket.size() : packetSize).collect(Collectors.toList());
         try {
             if (data.size() > 0) {
