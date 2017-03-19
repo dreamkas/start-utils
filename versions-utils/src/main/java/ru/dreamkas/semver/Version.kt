@@ -26,7 +26,7 @@ open class Version protected constructor(
         open val metaData: List<String>?
 ) : Comparable<Version> {
 
-
+    fun isPreRelease() = preRelease.preRelease != null
 
     override fun compareTo(other: Version): Int {
         return VersionComparator.SEMVER.compare(this, other)
