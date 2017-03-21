@@ -1,12 +1,15 @@
 package ru.dreamkas.semver
 
 import org.apache.commons.lang3.ArrayUtils
-import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertThrows
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.opentest4j.AssertionFailedError
+import ru.dreamkas.semver.VersionBuilder.build
 import ru.dreamkas.semver.exceptions.VersionFormatException
-import java.util.*
+import java.util.Arrays
 
 @DisplayName("SemVer 2.0.0 compliance testing")
 internal class SemverTest {
@@ -14,17 +17,17 @@ internal class SemverTest {
     @DisplayName("Versions by specification")
     fun comparingBySpecification() {
         comparing(
-                VersionBuilder.build("1.0.0-alpha"),
-                VersionBuilder.build("1.0.0-alpha.1"),
-                VersionBuilder.build("1.0.0-alpha.beta"),
-                VersionBuilder.build("1.0.0-beta"),
-                VersionBuilder.build("1.0.0-beta.2"),
-                VersionBuilder.build("1.0.0-beta.11"),
-                VersionBuilder.build("1.0.0-rc.1"),
-                VersionBuilder.build("1.0.0"),
-                VersionBuilder.build("1.0.2"),
-                VersionBuilder.build("1.0.5"),
-                VersionBuilder.build("1.0.10")
+                build("1.0.0-alpha"),
+                build("1.0.0-alpha.1"),
+                build("1.0.0-alpha.beta"),
+                build("1.0.0-beta"),
+                build("1.0.0-beta.2"),
+                build("1.0.0-beta.11"),
+                build("1.0.0-rc.1"),
+                build("1.0.0"),
+                build("1.0.2"),
+                build("1.0.5"),
+                build("1.0.10")
         )
     }
 
@@ -32,40 +35,49 @@ internal class SemverTest {
     @DisplayName("More versions by specification")
     fun otherVersionsComparing() {
         comparing(
-                VersionBuilder.build("0.0.1"),
-                VersionBuilder.build("0.0.2"),
-                VersionBuilder.build("1.0.0-1.2"),
-                VersionBuilder.build("1.0.0-alpha"),
-                VersionBuilder.build("1.0.0-alpha.1"),
-                VersionBuilder.build("1.0.0-alpha.2"),
-                VersionBuilder.build("1.0.0-beta.1"),
-                VersionBuilder.build("1.0.0-beta.02"),
-                VersionBuilder.build("1.0.0-beta.02.alpha"),
-                VersionBuilder.build("1.0.0-beta.09.alpha"),
-                VersionBuilder.build("1.0.0-rc.1"),
-                VersionBuilder.build("1.0.0-rc.2"),
-                VersionBuilder.build("1.0.0"),
-                VersionBuilder.build("1.0.1"),
-                VersionBuilder.build("1.0.2"),
-                VersionBuilder.build("1.1.0"),
-                VersionBuilder.build("1.1.1"),
-                VersionBuilder.build("1.1.10"),
-                VersionBuilder.build("1.10.0"),
-                VersionBuilder.build("1.10.1"),
-                VersionBuilder.build("2.0.0-rc.1"),
-                VersionBuilder.build("2.0.0-rc.2"),
-                VersionBuilder.build("2.0.0")
+                build("0.0.1"),
+                build("0.0.2"),
+                build("1.0.0-1.2"),
+                build("1.0.0-alpha"),
+                build("1.0.0-alpha.1"),
+                build("1.0.0-alpha.2"),
+                build("1.0.0-beta.1"),
+                build("1.0.0-beta.02"),
+                build("1.0.0-beta.02.alpha"),
+                build("1.0.0-beta.09.alpha"),
+                build("1.0.0-rc.1"),
+                build("1.0.0-rc.2"),
+                build("1.0.0"),
+                build("1.0.1"),
+                build("1.0.2"),
+                build("1.1.0"),
+                build("1.1.1"),
+                build("1.1.10"),
+                build("1.10.0"),
+                build("1.10.1"),
+                build("2.0.0-rc.1"),
+                build("2.0.0-rc.2"),
+                build("2.0.0")
 
         )
     }
 
     @Test
+    @DisplayName("Builders testing")
+    fun buildersTesting() {
+        assertEquals(build("1.0.0"), build(major = 1), "Check equality of versions built in different ways")
+        assertEquals(build("1.0.0-beta.22+as-gt3-yuecv"), build(1, 0, 0, "beta.22", "as-gt3-yuecv"), "Check equality of versions built in different ways")
+        assertEquals(build("1.0.0-beta.22+as-gt3-yuecv"), build("1.0.0-beta.22", "as-gt3-yuecv"), "Check equality of versions built in different ways")
+        assertEquals(build(1, 0, 0, "beta.22", "as-gt3-yuecv"), build("1.0.0-beta.22", "as-gt3-yuecv"), "Check equality of versions built in different ways")
+    }
+
+    @Test
     @DisplayName("Major versions")
-    fun majoreComparing() {
+    fun majorComparing() {
         comparing(
-                VersionBuilder.build("1.11.0"),
-                VersionBuilder.build("2.10.0"),
-                VersionBuilder.build("3.9.0")
+                build("1.11.0"),
+                build("2.10.0"),
+                build("3.9.0")
         )
     }
 
@@ -73,9 +85,9 @@ internal class SemverTest {
     @DisplayName("Minor versions")
     fun minorComparing() {
         comparing(
-                VersionBuilder.build("1.9.0"),
-                VersionBuilder.build("1.10.0"),
-                VersionBuilder.build("1.11.0")
+                build("1.9.0"),
+                build("1.10.0"),
+                build("1.11.0")
         )
     }
 
@@ -83,9 +95,9 @@ internal class SemverTest {
     @DisplayName("Patch versions")
     fun patchComparing() {
         comparing(
-                VersionBuilder.build("1.9.0"),
-                VersionBuilder.build("1.9.2"),
-                VersionBuilder.build("1.9.50")
+                build("1.9.0"),
+                build("1.9.2"),
+                build("1.9.50")
         )
     }
 
@@ -93,15 +105,15 @@ internal class SemverTest {
     @DisplayName("Prerelease versions")
     fun preReleaseComparing1() {
         comparing(
-                VersionBuilder.build("1.0.0-alpha"),
-                VersionBuilder.build("1.0.0-alpha.1"),
-                VersionBuilder.build("1.0.0-alpha.2"),
-                VersionBuilder.build("1.0.0-beta"),
-                VersionBuilder.build("1.0.0-beta.1"),
-                VersionBuilder.build("1.0.0-beta.10"),
-                VersionBuilder.build("1.0.0-rc.1"),
-                VersionBuilder.build("1.0.0-rc.2"),
-                VersionBuilder.build("1.0.0")
+                build("1.0.0-alpha"),
+                build("1.0.0-alpha.1"),
+                build("1.0.0-alpha.2"),
+                build("1.0.0-beta"),
+                build("1.0.0-beta.1"),
+                build("1.0.0-beta.10"),
+                build("1.0.0-rc.1"),
+                build("1.0.0-rc.2"),
+                build("1.0.0")
         )
     }
 
@@ -109,9 +121,9 @@ internal class SemverTest {
     @DisplayName("Base versions")
     fun shuffleComparing() {
         comparing(
-                VersionBuilder.build("1.9.0"),
-                VersionBuilder.build("2.3.10"),
-                VersionBuilder.build("3.1.0")
+                build("1.9.0"),
+                build("2.3.10"),
+                build("3.1.0")
         )
     }
 
@@ -119,16 +131,16 @@ internal class SemverTest {
     @DisplayName("Check metadata ignoring")
     fun buildSuffixTest() {
         comparing(
-                VersionBuilder.build("1.0.0-Alpha+dasd"),
-                VersionBuilder.build("1.0.0-alpha.1+123123"),
-                VersionBuilder.build("1.0.0-alpha.2+asss"),
-                VersionBuilder.build("1.0.0-BETA+q3wx"),
-                VersionBuilder.build("1.0.0-beta.1+dfhhzxdf"),
-                VersionBuilder.build("1.0.0-BeTa.11+scv-dsdf"),
-                VersionBuilder.build("1.0.0-beta.22+as-gt3-yuecv"),
-                VersionBuilder.build("1.0.0-rc.1+ff"),
-                VersionBuilder.build("1.0.0-rc.2+123"),
-                VersionBuilder.build("1.0.0+sa-Ssaf")
+                build("1.0.0-Alpha+dasd"),
+                build("1.0.0-alpha.1+123123"),
+                build("1.0.0-alpha.2+asss"),
+                build("1.0.0-BETA+q3wx"),
+                build("1.0.0-beta.1+dfhhzxdf"),
+                build("1.0.0-BeTa.11+scv-dsdf"),
+                build("1.0.0-beta.22+as-gt3-yuecv"),
+                build("1.0.0-rc.1+ff"),
+                build("1.0.0-rc.2+123"),
+                build("1.0.0+sa-Ssaf")
         )
     }
 
@@ -166,12 +178,12 @@ internal class SemverTest {
     }
 
     private fun eq(stringV1: String, stringV2: String) {
-        val v1 = VersionBuilder.build(stringV1)
-        val v2 = VersionBuilder.build(stringV2)
-        Assertions.assertEquals(v1, v2)
+        val v1 = build(stringV1)
+        val v2 = build(stringV2)
+        assertEquals(v1, v2)
         try {
-            Assertions.assertEquals(0, v1.compareTo(v2))
-            Assertions.assertEquals(0, v2.compareTo(v1))
+            assertEquals(0, v1.compareTo(v2))
+            assertEquals(0, v2.compareTo(v1))
         } catch (e: AssertionFailedError) {
             throw AssertionFailedError(v1.toString() + "!=" + v2, e)
         }
@@ -181,7 +193,7 @@ internal class SemverTest {
     private fun incorrect(vararg versions: String) {
         Arrays.stream(versions).forEach { it ->
             try {
-                Assertions.assertThrows<Throwable>(VersionFormatException::class.java) { VersionBuilder.build(it) }
+                assertThrows<Throwable>(VersionFormatException::class.java) { build(it) }
             } catch (e: AssertionFailedError) {
                 throw AssertionFailedError(it, e)
             }
@@ -190,11 +202,11 @@ internal class SemverTest {
 
     private fun comparing(vararg versions: Version) {
         for (i in 0..versions.size - 2) {
-            Assertions.assertTrue(versions[i + 1] > versions[i], "Expected " + versions[i + 1] + " > " + versions[i])
+            assertTrue(versions[i + 1] > versions[i], "Expected " + versions[i + 1] + " > " + versions[i])
         }
         ArrayUtils.reverse(versions)
         for (i in 0..versions.size - 2) {
-            Assertions.assertTrue(versions[i + 1] < versions[i], "Expected " + versions[i + 1] + " < " + versions[i])
+            assertTrue(versions[i + 1] < versions[i], "Expected " + versions[i + 1] + " < " + versions[i])
         }
     }
 }

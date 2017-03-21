@@ -1,0 +1,16 @@
+apply plugin: "com.zoltu.git-versioning"
+
+ZoltuGitVersioning {
+    if (gitBin != null) {
+        customGitBin = gitBin // define in gradle.properties gitBin="D:\\Program Files (x86)\\Git\\bin\\git.exe"
+    }
+}
+
+def versionInfo = ZoltuGitVersioning.versionInfo
+ext.gitVersion = "${versionInfo.major}.${versionInfo.minor}"
+if (versionInfo.tags != null) {
+    ext.gitVersion += ".0-${versionInfo.tags}"
+}
+if (versionInfo.commitCount > 0 || versionInfo.tags == null) {
+    ext.gitVersion += ".${versionInfo.commitCount}"
+}

@@ -1,19 +1,22 @@
 package ru.dreamkas.semver
 
 import ru.dreamkas.semver.comparators.VersionComparator
+import ru.dreamkas.semver.metadata.MetaData
 import ru.dreamkas.semver.prerelease.PreRelease
 
 /**
- * Field examples for 1.5.8-beta.22+revision 2ed49def
+ * Version object corresponding to [Semantic Versioning 2.0.0 Specification](http://semver.org/spec/v2.0.0.html)
+ *
+ * Field examples for 1.5.8-beta.22+revision.2ed49def
  * Use [VersionBuilder.build] for instance
- * [full] 1.5.8-beta.22+revision 2ed49def
- * [base] 1.5.8
- * [comparable] 1.5.8-beta.22
- * [major] 1
- * [minor] 5
- * [patch] 8
- * [preRelease] beta.22
- * [metaData] revision 2ed49def
+ * * [full] 1.5.8-beta.22+revision.2ed49def
+ * * [base] 1.5.8
+ * * [comparable] 1.5.8-beta.22
+ * * [major] 1
+ * * [minor] 5
+ * * [patch] 8
+ * * [preRelease] beta.22
+ * * [metaData] revision.2ed49def
  */
 open class Version protected constructor(
         open val full: String,
@@ -23,7 +26,7 @@ open class Version protected constructor(
         open val minor: Long,
         open val patch: Long,
         open val preRelease: PreRelease,
-        open val metaData: List<String>?
+        open val metaData: MetaData
 ) : Comparable<Version> {
 
     fun isPreRelease() = preRelease.preRelease != null

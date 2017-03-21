@@ -2,7 +2,6 @@ ext {
     jupiter_version = "5.0.0-M3"
     log4j_version = "1.7.24"
     mockito_version = "1.10.19"
-    gitVersion = ""
 }
 
 buildscript {
@@ -13,38 +12,19 @@ buildscript {
         }
     }
     dependencies {
-        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3"
         classpath files('libs/git-versioning-3.0.2.jar') //"gradle.plugin.com.zoltu.gradle.plugin:git-versioning:3.0.2"
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3"
     }
 }
 
-apply plugin: "com.zoltu.git-versioning"
-
-ZoltuGitVersioning {
-    if (gitBin != null) {
-        customGitBin = gitBin // define in gradle.properties gitBin="D:\\Program Files (x86)\\Git\\bin\\git.exe"
-    }
-}
-
-def versionInfo = ZoltuGitVersioning.versionInfo
-ext.gitVersion = "${versionInfo.major}.${versionInfo.minor}"
-if (versionInfo.tags != null) {
-    ext.gitVersion += ".0-${versionInfo.tags}"
-}
-if (versionInfo.commitCount > 0 || versionInfo.tags == null) {
-    ext.gitVersion += ".${versionInfo.commitCount}"
-}
+apply from: '/git_versioning.gradle'
 
 allprojects {
     repositories {
         jcenter()
     }
-
-    apply plugin: 'maven'
-    apply plugin: 'maven-publish'
     apply plugin: 'java'
     apply plugin: 'idea'
-    apply plugin: 'com.jfrog.bintray'
 
     sourceCompatibility = 1.8
     group = 'ru.dreamkas.utils'
@@ -52,6 +32,9 @@ allprojects {
 }
 
 subprojects {
+
+    apply from: '../publishing.gradle'
+
     dependencies {
         compile group: 'org.slf4j', name: 'slf4j-api', version: log4j_version
         testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: jupiter_version
@@ -59,35 +42,6 @@ subprojects {
         testCompile group: 'org.mockito', name: 'mockito-all', version: mockito_version
     }
 
-    publishing {
-        publications {
-            StartUtilsPublication(MavenPublication) {
-                from components.java
-                groupId project.getGroup()
-                artifactId project.getName()
-                version project.getVersion()
-            }
-        }
-    }
-
-    bintray {
-        user = 'happyfat'
-        key = '856f77d5b1ae8e84f1ef126f1b284b9b878a977e'
-        publications = ['StartUtilsPublication']
-        publish = true
-        override = true
-        pkg {
-            repo = 'start-utils'
-            name = project.getName()
-            userOrg = 'dreamkas'
-            licenses = ['MIT']
-            vcsUrl = 'https://github.com/dreamkas/start-utils.git'
-            publicDownloadNumbers = true
-            version {
-                name = project.getVersion()
-            }
-        }
-    }
 }
 
 task wrapper(type: Wrapper) {

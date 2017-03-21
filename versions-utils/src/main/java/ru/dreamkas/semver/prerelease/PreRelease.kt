@@ -1,10 +1,11 @@
 package ru.dreamkas.semver.prerelease
 
 import org.apache.commons.lang3.StringUtils
+import java.util.*
 
 class PreRelease internal constructor(
         val preRelease: String?,
-        val identificators: List<PreReleaseId> = preRelease?.split(".")?.map {
+        val identifiers: List<PreReleaseId> = preRelease?.split(".")?.map {
             if (StringUtils.isNumeric(it)) PreReleaseNumericId(it.toLong()) else PreReleaseStringId(it)
         } ?: ArrayList<PreReleaseId>()) {
 
@@ -14,12 +15,16 @@ class PreRelease internal constructor(
 
         other as PreRelease
 
-        if (identificators != other.identificators) return false
+        if (identifiers != other.identifiers) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        return identificators.hashCode()
+        return identifiers.hashCode()
+    }
+
+    override fun toString(): String {
+        return preRelease ?: ""
     }
 }
