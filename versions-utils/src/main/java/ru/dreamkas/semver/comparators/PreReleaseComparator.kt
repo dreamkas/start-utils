@@ -9,8 +9,8 @@ import java.util.*
  */
 internal class PreReleaseComparator : Comparator<Version>, Serializable {
     override fun compare(o1: Version, o2: Version): Int {
-        val first = o1.preRelease.identificators
-        val second = o2.preRelease.identificators
+        val first = o1.preRelease.identifiers
+        val second = o2.preRelease.identifiers
         val firstSize = first.size
         val secondSize = second.size
         return if (firstSize == secondSize && firstSize == 0) 0
