@@ -19,18 +19,20 @@ import ru.dreamkas.semver.prerelease.PreRelease
  * * [metaData] revision.2ed49def
  */
 open class Version protected constructor(
-        open val full: String,
-        open val base: String,
-        open val comparable: String,
-        open val major: Long,
-        open val minor: Long,
-        open val patch: Long,
-        open val preRelease: PreRelease,
-        open val metaData: MetaData
+        val full: String,
+        base: String,
+        comparable: String,
+        val major: Long,
+        val minor: Long,
+        val patch: Long,
+        val preRelease: PreRelease,
+        val metaData: MetaData
 ) : Comparable<Version> {
 
+    val base = if (base != full) VersionBuilder.build(base) else full
+    val comparable = if (comparable != full) VersionBuilder.build(comparable) else full
     fun isPreRelease() = preRelease.preRelease != null
-
+    fun isRelease() = !isPreRelease()
     override fun compareTo(other: Version): Int {
         return VersionComparator.SEMVER.compare(this, other)
     }
@@ -60,5 +62,12 @@ open class Version protected constructor(
         result = 31 * result + preRelease.hashCode()
         return result
     }
+    companion object {
+        @JvmStatic
+        fun of(version: String): Version {
+            return VersionBuilder.build(version)
+        }
+    }
 
 }
+
