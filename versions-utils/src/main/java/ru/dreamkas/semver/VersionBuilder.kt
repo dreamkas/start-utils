@@ -49,7 +49,7 @@ object VersionBuilder {
         val matches = PATTERN.matcher(fullVersion)
         if (matches.matches()) {
             try {
-                return InternalVersion(matches)
+                return makeVersion(matches)
             } catch (e: NumberFormatException) {
                 throw VersionFormatException(fullVersion, e)
             }
@@ -99,7 +99,7 @@ object VersionBuilder {
         return build(version)
     }
 
-    private class InternalVersion(matches: Matcher) : Version(
+    private fun makeVersion(matches: Matcher) = Version(
             matches.group(full),
             matches.group(base),
             matches.group(comparable),

@@ -4,7 +4,10 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.DisplayName
+import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestFactory
+import java.util.stream.Stream
 
 internal class VersionTest {
 
@@ -26,21 +29,26 @@ internal class VersionTest {
 
     @Test
     @DisplayName("Base version")
-    fun baseVersionTest() {
-        val preRelease = Version.of("1.0.0-beta.1")
-        val expected = Version.of("1.0.0")
+    fun baseVersionTest(): Stream<DynamicTest> = Stream.of(
+            DynamicTest.dynamicTest("Разные версии") {
+                assertEquals(Version.of("1.0.0"), Version.of("1.0.0-beta.1").base)
+            },
+            DynamicTest.dynamicTest("Одинаковые версии") {
+                assertEquals(Version.of("1.0.0"), Version.of("1.0.0").base)
+            }
+    )
 
-        assertEquals(expected, preRelease.base)
-    }
-
-    @Test
+    @TestFactory
     @DisplayName("Comparable version")
-    fun comparableVersionTest() {
-        val preRelease = Version.of("1.0.0-beta.1+develop")
-        val expected = Version.of("1.0.0-beta.1")
+    fun comparableVersionTest(): Stream<DynamicTest> = Stream.of(
+            DynamicTest.dynamicTest("Разные версии") {
+                assertEquals(Version.of("1.0.0-beta.1"), Version.of("1.0.0-beta.1+develop").comparable)
+            },
+            DynamicTest.dynamicTest("Одинаковые версии") {
+                assertEquals(Version.of("1.0.0-beta.1"), Version.of("1.0.0-beta.1").comparable)
+            }
 
-        assertEquals(expected, preRelease.comparable)
-    }
+    )
 
     @Test
     @DisplayName("Full version as toString")
