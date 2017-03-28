@@ -1,6 +1,3 @@
 rootProject.name = 'start-utils'
-include rootDir.listFiles().findAll {
-    it.isDirectory() && ( it.getName().endsWith("-utils"))
-}.collect {
-    it.getName()
-}.toArray(new String[0])
+include 'time-utils'
+include 'versions-utils'

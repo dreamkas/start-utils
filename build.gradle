@@ -15,7 +15,6 @@ buildscript {
         classpath files('libs/git-versioning-3.0.2.jar') //"gradle.plugin.com.zoltu.gradle.plugin:git-versioning:3.0.2"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.1.1"
         classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3"
-        classpath 'com.netflix.nebula:nebula-dependency-recommender:3.6.3'
     }
 }
 
@@ -25,7 +24,6 @@ allprojects {
     repositories {
         jcenter()
     }
-
     apply plugin: 'java'
     apply plugin: 'idea'
 
@@ -37,7 +35,12 @@ allprojects {
 subprojects {
 
     apply from: '../publishing.gradle'
-    apply from: '../dependencies.gradle'
+
+    dependencies {
+        testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: jupiter_version
+        testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: jupiter_version
+        testCompile group: 'org.mockito', name: 'mockito-all', version: mockito_version
+    }
 
 }
 
