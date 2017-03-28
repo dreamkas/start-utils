@@ -1,16 +1,8 @@
 apply plugin: 'kotlin'
 
-buildscript {
-    ext.kotlin_version = '1.1.0'
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-    }
-}
-
 dependencies {
-    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.5'
-    compile group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib-jre8', version: kotlin_version
+    compile 'org.jetbrains.kotlin:kotlin-stdlib-jre8'
+    compile 'org.apache.commons:commons-lang3'
+    testCompile 'org.junit.jupiter:junit-jupiter-api'
+    testCompile 'org.junit.jupiter:junit-jupiter-engine'
 }
