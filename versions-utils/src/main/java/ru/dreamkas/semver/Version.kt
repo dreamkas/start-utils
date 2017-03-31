@@ -22,9 +22,9 @@ class Version internal constructor(
         val full: String,
         base: String,
         comparable: String,
-        val major: Long,
-        val minor: Long,
-        val patch: Long,
+        val major: Int,
+        val minor: Int,
+        val patch: Int,
         val preRelease: PreRelease,
         val metaData: MetaData
 ) : Comparable<Version> {

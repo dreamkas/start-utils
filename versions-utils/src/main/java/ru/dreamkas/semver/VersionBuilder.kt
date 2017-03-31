@@ -75,7 +75,7 @@ object VersionBuilder {
      */
     @JvmStatic
     @JvmOverloads
-    fun build(major: Long = 0, minor: Long = 0, patch: Long = 0, preRelease: String = "", metaData: String = ""): Version {
+    fun build(major: Int = 0, minor: Int = 0, patch: Int = 0, preRelease: String = "", metaData: String = ""): Version {
         var version = "$major.$minor.$patch"
         if (preRelease.isNotEmpty()) version += "-$preRelease"
         if (metaData.isNotEmpty()) version += "+$metaData"
@@ -103,8 +103,8 @@ object VersionBuilder {
             matches.group(full),
             matches.group(base),
             matches.group(comparable),
-            matches.group(major).toLong(), matches.group(minor).toLong(),
-            matches.group(patch).toLong(),
+            matches.group(major).toInt(), matches.group(minor).toInt(),
+            matches.group(patch).toInt(),
             PreRelease(matches.group(preRelease)),
             MetaData(matches.group(metaData))
     )

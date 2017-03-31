@@ -6,7 +6,7 @@ import java.util.*
 class PreRelease internal constructor(
         val preRelease: String?,
         val identifiers: List<PreReleaseId> = preRelease?.split(".")?.map {
-            if (StringUtils.isNumeric(it)) PreReleaseNumericId(it.toLong()) else PreReleaseStringId(it)
+            if (StringUtils.isNumeric(it)) PreReleaseNumericId(it.toInt()) else PreReleaseStringId(it)
         } ?: ArrayList<PreReleaseId>()) {
 
     override fun equals(other: Any?): Boolean {
