@@ -1,0 +1,79 @@
+#!/usr/bin/env bash
+#!/bin/bash
+
+set -e
+
+function remove_container() {
+        id=$(docker ps -aqf "name=$1")
+        if [ ! -z $id ]; then
+                log "????????? docker rm -f $id..."
+                docker rm -f $id
+        fi
+}
+
+function log() {
+        if [ ! -z $v ]; then
+                echo $1
+                echo
+        fi
+}
+
+function exec() {
+
+        log "Выполняем $1..."
+        $1
+        echo "-----------------------------------------------------------------"
+
+}
+
+function help() {
+        echo
+        echo 'Использование: ./update [OPTION]...'
+        echo 'Обновляет докер-контейнер до указанного тега тега'
+        echo
+        echo '  -c, --container           Обновляемый докер-контейнер'
+        echo '  -t, --tag                 Тэг, до которого нужно обновиться'
+        echo '  -v, --verbose             Логирование этапов работы утилиты'
+        echo '  -h, --help                Показать эту справку'
+        echo
+        echo 'Examples:'
+        echo '  ./update -c updateserver -t beta        Обновить контейнер updateserver до тега beta.'
+        echo
+        echo
+        exit 0
+}
+
+while [ -n "$1" ]
+do
+        case "$1" in
+                -c|--container) container="$2"
+                        shift ;;
+                -t|--tag) tag=$(echo $2 | sed 's/./\l&/g')
+                        shift ;;
+                -h|--help) help ;;
+                -v|--verbose) v=1 ;;
+                --) shift
+                        break ;;
+                *) echo "$1 is not an option";;
+        esac
+        shift
+done
+if [ -z $container ] || [ -z $tag ]; then
+        help
+fi
+log "verbose turn on"
+log "container=$container"
+log "tag=$tag"
+old=${container}_old
+remove_container $old
+exec "docker pull happyfat/$container:$tag"
+id=$(docker ps -aqf 'name=$container')
+if [ ! -z id ]; then
+        exec "docker rename $container $old"
+        exec "docker stop $old"
+fi
+exec "docker run --name $container --restart=always -v /etc/$container:/etc/$container -p 443:9443 --link updatepostgres:updatepostgres -it -d happyfat/$container:$tag"
+remove_container $old
+exec "docker attach $container --detach-keys q"
+
+exit 0
