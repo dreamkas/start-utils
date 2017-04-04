@@ -21,9 +21,13 @@ object VersionBuilder {
         (?<$full>
             (?<$comparable>
                 (?<$base>
-                    (?<$major>0|[1-9]+0*)\.
-                    (?<$minor>0|[1-9]+0*)\.
-                    (?<$patch>0|[1-9]+0*)
+                    (?<$major>0|[1-9]+0*)
+                    (?:
+                        \.(?<$minor>0|[1-9]+0*)
+                        (?:
+                            \.(?<$patch>0|[1-9]+0*)
+                        )?
+                    )?
                 )
                 (?:-(?<$preRelease>[\da-z\-]+(?:\.[\da-z\-]+)*))?
             )
@@ -99,14 +103,18 @@ object VersionBuilder {
         return build(version)
     }
 
-    private fun makeVersion(matches: Matcher) = Version(
-            matches.group(full),
-            matches.group(base),
-            matches.group(comparable),
-            matches.group(major).toInt(), matches.group(minor).toInt(),
-            matches.group(patch).toInt(),
-            PreRelease(matches.group(preRelease)),
-            MetaData(matches.group(metaData))
-    )
+    private fun makeVersion(matches: Matcher): Version {
+        return Version(
+                matches.group(full),
+                matches.group(base),
+                matches.group(comparable),
+                matches.group(major).toInt(),
+                matches.group(minor)?.toInt() ?: 0,
+                matches.group(patch)?.toInt() ?: 0,
+                PreRelease(matches.group(preRelease)),
+                MetaData(matches.group(metaData))
+        )
+    }
+
 }
 

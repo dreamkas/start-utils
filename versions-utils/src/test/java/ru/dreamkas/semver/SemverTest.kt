@@ -148,8 +148,6 @@ internal class SemverTest {
     @DisplayName("Not correct versions")
     fun incorrectVersions() {
         incorrect("incorrect",
-                "1.0",
-                "1.0-alpha",
                 "10.3.8.55",
                 "1.0.99999999999999999999999999999999999",
                 "01.0.0",

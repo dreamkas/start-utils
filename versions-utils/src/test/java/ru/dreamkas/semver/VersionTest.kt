@@ -11,6 +11,16 @@ import java.util.stream.Stream
 
 internal class VersionTest {
 
+
+    @Test
+    @DisplayName("Short versions")
+    fun shortVersion() {
+        assertEquals(Version.of("1.0.0"), Version.of("1"))
+        assertEquals(Version.of("1.0.0"), Version.of("1.0"))
+        assertEquals(Version.of("1.2.0"), Version.of("1.2"))
+        assertEquals(Version.of("1.0.0-alpha"), Version.of("1.0-alpha"))
+    }
+
     @Test
     @DisplayName("PreRelease version")
     fun preReleaseTest() {
