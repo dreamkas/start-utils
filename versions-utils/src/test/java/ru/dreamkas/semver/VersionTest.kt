@@ -19,6 +19,19 @@ internal class VersionTest {
         assertEquals(Version.of("1.0.0"), Version.of("1.0"))
         assertEquals(Version.of("1.2.0"), Version.of("1.2"))
         assertEquals(Version.of("1.0.0-alpha"), Version.of("1.0-alpha"))
+
+        assertEquals(Version.of("9.1.2"), Version.of(9, 1, 2))
+        assertEquals(Version.of("9.1"), Version.of(9, 1))
+        assertEquals(Version.of("9"), Version.of(9))
+
+    }
+
+    @Test
+    @DisplayName("Short int versions")
+    fun shortIntVersion() {
+        assertEquals(Version.of("9.1.2"), Version.of(9, 1, 2))
+        assertEquals(Version.of("19.1.0"), Version.of(19, 1))
+        assertEquals(Version.of("9.0.0"), Version.of(9))
     }
 
     @Test

@@ -19,12 +19,12 @@ import ru.dreamkas.semver.prerelease.PreRelease
  * * [metaData] revision.2ed49def
  */
 class Version internal constructor(
-        val full: String,
-        base: String,
-        comparable: String,
         val major: Int,
-        val minor: Int,
-        val patch: Int,
+        val minor: Int = 0,
+        val patch: Int = 0,
+        val full: String = "$major.$minor.$patch",
+        base: String = full,
+        comparable: String = base,
         val preRelease: PreRelease = PreRelease(),
         val metaData: MetaData = MetaData()
 ) : Comparable<Version> {
@@ -77,12 +77,10 @@ class Version internal constructor(
         }
 
         @JvmStatic
+        @JvmOverloads
         fun of(major: Int, minor: Int = 0, patch: Int = 0): Version {
-            val version = major.toString() + "." + minor + "." + patch
-            return Version(version, version, major, minor, patch);
+            return Version(major, minor, patch);
         }
-
     }
-
 }
 

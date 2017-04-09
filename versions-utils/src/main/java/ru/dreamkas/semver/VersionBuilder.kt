@@ -105,12 +105,12 @@ object VersionBuilder {
 
     private fun makeVersion(matches: Matcher): Version {
         return Version(
-                matches.group(full),
-                matches.group(base),
-                matches.group(comparable),
                 matches.group(major).toInt(),
                 matches.group(minor)?.toInt() ?: 0,
                 matches.group(patch)?.toInt() ?: 0,
+                matches.group(full),
+                matches.group(base),
+                matches.group(comparable),
                 PreRelease(matches.group(preRelease)),
                 MetaData(matches.group(metaData))
         )
