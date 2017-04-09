@@ -89,6 +89,7 @@ internal class VersionTest {
         assertEquals(Version.of("9.0.0"), version.truncateToMajor())
         assertEquals(Version.of("9.5.0"), version.truncateToMinor())
         assertEquals(Version.of("9.5.4"), version.truncateToPatch())
+        assertEquals(Version.of("9.5.4-beta.1"), version.truncateToPreRelease())
     }
 
     @Test

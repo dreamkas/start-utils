@@ -29,17 +29,25 @@ class Version internal constructor(
         val metaData: MetaData = MetaData()
 ) : Comparable<Version> {
 
-    val base = if (base != full) VersionBuilder.build(base) else this
-    val comparable = if (comparable != full) VersionBuilder.build(comparable) else this
+    val base = if (base == full) this else this.truncateToPatch()
+
+    val comparable = if (comparable == full) {
+        this
+    } else {
+        Version(major, minor, patch, comparable, this.base.toString(), comparable, preRelease)
+    }
+
     fun isPreRelease() = preRelease.preRelease != null
     fun isRelease() = !isPreRelease()
     override fun compareTo(other: Version): Int {
         return VersionComparator.SEMVER.compare(this, other)
     }
 
-    fun truncateToMajor(): Version = VersionBuilder.build(major)
-    fun truncateToMinor(): Version = VersionBuilder.build(major, minor)
-    fun truncateToPatch(): Version = VersionBuilder.build(major, minor, patch)
+    fun truncateToMajor(): Version = Version(major)
+    fun truncateToMinor(): Version = Version(major, minor)
+    fun truncateToPatch(): Version = Version(major, minor, patch)
+    fun truncateToPreRelease(): Version = Version(major, minor, patch, comparable.toString(), comparable.base.toString(), comparable.toString(),
+            preRelease)
     fun gt(other: Version): Boolean = this > other
     fun lt(other: Version): Boolean = this < other
     fun le(other: Version): Boolean = this <= other
