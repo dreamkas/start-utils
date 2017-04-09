@@ -70,4 +70,25 @@ internal class VersionTest {
         assertEquals(expected, preRelease.toString())
     }
 
+    @Test
+    fun truncateTest() {
+        val version = Version.of("9.5.4-beta.1+meta")
+        assertEquals(Version.of("9.0.0"), version.truncateToMajor())
+        assertEquals(Version.of("9.5.0"), version.truncateToMinor())
+        assertEquals(Version.of("9.5.4"), version.truncateToPatch())
+    }
+
+    @Test
+    fun shortNamesCompareTest() {
+        assertTrue(Version.of("9.0.0").gt(Version.of("8.0.0")))
+
+        assertTrue(Version.of("9.0.0").ge(Version.of("8.0.0")))
+        assertTrue(Version.of("9.0.0").ge(Version.of("9.0.0")))
+
+        assertTrue(Version.of("9.0.0").lt(Version.of("10.0.0")))
+
+        assertTrue(Version.of("9.0.0").le(Version.of("10.0.0")))
+        assertTrue(Version.of("9.0.0").le(Version.of("9.0.0")))
+    }
+
 }

@@ -25,8 +25,8 @@ class Version internal constructor(
         val major: Int,
         val minor: Int,
         val patch: Int,
-        val preRelease: PreRelease,
-        val metaData: MetaData
+        val preRelease: PreRelease = PreRelease(),
+        val metaData: MetaData = MetaData()
 ) : Comparable<Version> {
 
     val base = if (base != full) VersionBuilder.build(base) else this
@@ -37,6 +37,13 @@ class Version internal constructor(
         return VersionComparator.SEMVER.compare(this, other)
     }
 
+    fun truncateToMajor(): Version = VersionBuilder.build(major)
+    fun truncateToMinor(): Version = VersionBuilder.build(major, minor)
+    fun truncateToPatch(): Version = VersionBuilder.build(major, minor, patch)
+    fun gt(other: Version): Boolean = this > other
+    fun lt(other: Version): Boolean = this < other
+    fun le(other: Version): Boolean = this <= other
+    fun ge(other: Version): Boolean = this >= other
     override fun toString(): String {
         return full
     }
@@ -68,6 +75,13 @@ class Version internal constructor(
         fun of(version: String): Version {
             return VersionBuilder.build(version)
         }
+
+        @JvmStatic
+        fun of(major: Int, minor: Int = 0, patch: Int = 0): Version {
+            val version = major.toString() + "." + minor + "." + patch
+            return Version(version, version, major, minor, patch);
+        }
+
     }
 
 }

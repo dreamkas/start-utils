@@ -4,7 +4,7 @@ import org.apache.commons.lang3.StringUtils
 import java.util.*
 
 class PreRelease internal constructor(
-        val preRelease: String?,
+        val preRelease: String? = null,
         val identifiers: List<PreReleaseId> = preRelease?.split(".")?.map {
             if (StringUtils.isNumeric(it)) PreReleaseNumericId(it.toInt()) else PreReleaseStringId(it)
         } ?: ArrayList<PreReleaseId>()) {
