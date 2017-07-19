@@ -1,7 +1,6 @@
 package ru.dreamkas.semver
 
 import ru.dreamkas.semver.comparators.VersionComparator
-import ru.dreamkas.semver.metadata.MetaData
 import ru.dreamkas.semver.prerelease.PreRelease
 
 /**
@@ -82,6 +81,11 @@ class Version internal constructor(
         @JvmStatic
         fun of(version: String): Version {
             return VersionBuilder.build(version)
+        }
+
+        @JvmStatic
+        fun matches(version: String): Boolean {
+            return VersionBuilder.matches(version)
         }
 
         @JvmStatic

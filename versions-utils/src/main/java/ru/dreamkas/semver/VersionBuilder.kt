@@ -1,7 +1,6 @@
 package ru.dreamkas.semver
 
 import ru.dreamkas.semver.exceptions.VersionFormatException
-import ru.dreamkas.semver.metadata.MetaData
 import ru.dreamkas.semver.prerelease.PreRelease
 import java.util.regex.Matcher
 import java.util.regex.Pattern
@@ -102,6 +101,9 @@ object VersionBuilder {
         if (metaData.isNotEmpty()) version += "+$metaData"
         return build(version)
     }
+
+    @JvmStatic
+    fun matches(fullVersion: String) = PATTERN.matcher(fullVersion).matches()
 
     private fun makeVersion(matches: Matcher): Version {
         return Version(

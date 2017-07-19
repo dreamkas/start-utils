@@ -1,11 +1,9 @@
 package ru.dreamkas.semver.prerelease
 
-import org.apache.commons.lang3.StringUtils
-
 class PreReleaseStringId(val id: String) : PreReleaseId {
     override fun compareTo(other: PreReleaseId): Int {
         return if (other is PreReleaseNumericId) 1
-        else StringUtils.compareIgnoreCase(id, (other as PreReleaseStringId).id)
+        else id.compareTo((other as PreReleaseStringId).id, ignoreCase = true)
     }
 
     override fun equals(other: Any?): Boolean {

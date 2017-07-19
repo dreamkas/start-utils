@@ -1,6 +1,6 @@
-package ru.dreamkas.semver.metadata
+package ru.dreamkas.semver
 
-import java.util.*
+import java.util.ArrayList
 
 class MetaData internal constructor(
         val metaData: String? = null,

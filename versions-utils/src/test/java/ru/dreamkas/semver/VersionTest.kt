@@ -105,4 +105,13 @@ internal class VersionTest {
         assertTrue(Version.of("9.0.0").le(Version.of("9.0.0")))
     }
 
+
+    @Test
+    fun versionMatchesTest() {
+        assertTrue(Version.matches("9.0.0"))
+        assertTrue(Version.matches("9.5.4-beta.1"))
+        assertTrue(Version.matches("9.5.4-beta.1+meta"))
+        assertFalse(Version.matches("9.5.4.2"))
+    }
+
 }
