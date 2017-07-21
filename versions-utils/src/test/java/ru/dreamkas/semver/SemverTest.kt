@@ -158,7 +158,9 @@ internal class SemverTest {
                 "1.0.0-alpha.1+Test test",
                 "1.0.0-",
                 "1.0.0+",
-                "1.0.0-alpha+"
+                "1.0.0-alpha+",
+                "1.0.0-pre_release_id_with_underscores.1",
+                "1.0.0+meta_with_underscores"
         )
     }
 
