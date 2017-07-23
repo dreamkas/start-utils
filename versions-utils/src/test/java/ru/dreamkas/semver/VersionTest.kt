@@ -76,11 +76,11 @@ internal class VersionTest {
     @Test
     @DisplayName("Full version as toString")
     fun fullVersionTest() {
-        val preRelease = Version.of("1.0.0-beta.1")
-        val expected = "1.0.0-beta.1"
-
-        assertEquals(expected, preRelease.full)
-        assertEquals(expected, preRelease.toString())
+        assertEquals("1.0.0", Version.of(1).toString())
+        assertEquals("1.2.0", Version.of("1.2").toString())
+        assertEquals("1.0.0-beta.2", Version.of("1.0.0-beta.2").toString())
+        assertEquals("1.0.0+meta.5", Version.of("1.0.0+meta.5").toString())
+        assertEquals("1.0.0-beta.1+meta.5", Version.of("1.0.0-beta.1+meta.5").toString())
     }
 
     @Test

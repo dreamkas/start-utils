@@ -8,9 +8,6 @@ import ru.dreamkas.semver.prerelease.PreRelease
  *
  * Field examples for 1.5.8-beta.22+revision.2ed49def
  * Use [VersionBuilder.build] for instance
- * * [full] 1.5.8-beta.22+revision.2ed49def
- * * [base] 1.5.8
- * * [comparable] 1.5.8-beta.22
  * * [major] 1
  * * [minor] 5
  * * [patch] 8
@@ -21,20 +18,14 @@ class Version internal constructor(
         val major: Int,
         val minor: Int = 0,
         val patch: Int = 0,
-        val full: String = "$major.$minor.$patch",
-        base: String = full,
-        comparable: String = base,
-        val preRelease: PreRelease = PreRelease(),
-        val metaData: MetaData = MetaData()
+        val preRelease: PreRelease = PreRelease.EMPTY,
+        val metaData: MetaData = MetaData.EMPTY
 ) : Comparable<Version> {
 
-    val base = if (base == full) this else this.truncateToPatch()
-
-    val comparable = if (comparable == full) {
-        this
-    } else {
-        Version(major, minor, patch, comparable, this.base.toString(), comparable, preRelease)
-    }
+    val base: Version
+        get() = truncateToPatch()
+    val comparable: Version
+        get() = truncateToPreRelease()
 
     fun isPreRelease() = preRelease.preRelease != null
     fun isRelease() = !isPreRelease()
@@ -45,14 +36,15 @@ class Version internal constructor(
     fun truncateToMajor(): Version = Version(major)
     fun truncateToMinor(): Version = Version(major, minor)
     fun truncateToPatch(): Version = Version(major, minor, patch)
-    fun truncateToPreRelease(): Version = Version(major, minor, patch, comparable.toString(), comparable.base.toString(), comparable.toString(),
-            preRelease)
+    fun truncateToPreRelease(): Version = Version(major, minor, patch, preRelease)
+
     fun gt(other: Version): Boolean = this > other
     fun lt(other: Version): Boolean = this < other
     fun le(other: Version): Boolean = this <= other
     fun ge(other: Version): Boolean = this >= other
+
     override fun toString(): String {
-        return full
+        return "$major.$minor.$patch" + preRelease.toString() + metaData.toString()
     }
 
     override fun equals(other: Any?): Boolean {
