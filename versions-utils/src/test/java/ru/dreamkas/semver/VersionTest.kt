@@ -74,13 +74,24 @@ internal class VersionTest {
     )
 
     @Test
-    @DisplayName("Full version as toString")
-    fun fullVersionTest() {
+    @DisplayName("Full version as toFullString")
+    fun toFullStringTest() {
+        assertEquals("1.0.0", Version.of(1).toFullString())
+        assertEquals("1.2.0", Version.of("1.2").toFullString())
+        assertEquals("1.0.0-beta.2", Version.of("1.0.0-beta.2").toFullString())
+        assertEquals("1.0.0+meta.5", Version.of("1.0.0+meta.5").toFullString())
+        assertEquals("1.0.0-beta.1+meta.5", Version.of("1.0.0-beta.1+meta.5").toFullString())
+    }
+
+
+    @Test
+    @DisplayName("Comparable version as toString")
+    fun toStringTest() {
         assertEquals("1.0.0", Version.of(1).toString())
         assertEquals("1.2.0", Version.of("1.2").toString())
         assertEquals("1.0.0-beta.2", Version.of("1.0.0-beta.2").toString())
-        assertEquals("1.0.0+meta.5", Version.of("1.0.0+meta.5").toString())
-        assertEquals("1.0.0-beta.1+meta.5", Version.of("1.0.0-beta.1+meta.5").toString())
+        assertEquals("1.0.0", Version.of("1.0.0+meta.5").toString())
+        assertEquals("1.0.0-beta.1", Version.of("1.0.0-beta.1+meta.5").toString())
     }
 
     @Test
