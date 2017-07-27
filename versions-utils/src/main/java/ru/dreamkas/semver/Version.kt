@@ -43,12 +43,12 @@ class Version internal constructor(
     fun le(other: Version): Boolean = this <= other
     fun ge(other: Version): Boolean = this >= other
 
-    override fun toString(): String {
+    fun toComparableString(): String {
         return "$major.$minor.$patch" + preRelease.toString()
     }
 
-    fun toFullString(): String {
-        return toString() + metaData.toString()
+    override fun toString(): String {
+        return toComparableString() + metaData.toString()
     }
 
     override fun equals(other: Any?): Boolean {
