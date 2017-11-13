@@ -1,5 +1,4 @@
 ext {
-    log4j_version = "1.7.24"
     mockito_version = "1.10.19"
 }
 
@@ -12,13 +11,13 @@ buildscript {
         mavenCentral()
     }
     ext {
-        jUnitVersion = "5.0.0-M5"
-        jUnitPluginVersion = "1.0.0-M5"
+        jUnitVersion = "5.0.0"
+        jUnitPluginVersion = "1.0.0"
     }
     dependencies {
-        classpath files('libs/git-versioning-3.0.2.jar') //"gradle.plugin.com.zoltu.gradle.plugin:git-versioning:3.0.2"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.1.1"
-        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3"
+        classpath files('libs/git-versioning-3.0.2.jar')
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.1.51"
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.0"
         classpath "org.junit.platform:junit-platform-gradle-plugin:${jUnitPluginVersion}"
     }
 }
@@ -54,5 +53,5 @@ subprojects {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '3.2.1'
+    gradleVersion = '4.3.1'
 }
