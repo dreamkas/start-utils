@@ -16,7 +16,7 @@ buildscript {
     }
     dependencies {
         classpath files('libs/git-versioning-3.0.2.jar')
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.1.51"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.1.60"
         classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.0"
         classpath "org.junit.platform:junit-platform-gradle-plugin:${jUnitPluginVersion}"
     }
