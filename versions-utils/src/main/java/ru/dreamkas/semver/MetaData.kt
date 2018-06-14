@@ -1,12 +1,15 @@
-package ru.dreamkas.semver.metadata
+package ru.dreamkas.semver
 
-import java.util.*
+import java.util.ArrayList
 
-class MetaData internal constructor(
-        val metaData: String?,
-        val identifiers: List<String> = metaData?.split(".")?.toList() ?: ArrayList<String>()) {
+class MetaData internal constructor(val metaData: String? = null) {
+    val identifiers: List<String> = metaData?.split(".")?.toList() ?: ArrayList<String>()
 
     override fun toString(): String {
-        return metaData ?: ""
+        return metaData?.let { "+$metaData" } ?: ""
+    }
+
+    companion object {
+        val EMPTY = MetaData()
     }
 }

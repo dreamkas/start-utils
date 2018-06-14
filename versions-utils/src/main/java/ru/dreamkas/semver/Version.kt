@@ -1,7 +1,6 @@
 package ru.dreamkas.semver
 
 import ru.dreamkas.semver.comparators.VersionComparator
-import ru.dreamkas.semver.metadata.MetaData
 import ru.dreamkas.semver.prerelease.PreRelease
 
 /**
@@ -9,33 +8,47 @@ import ru.dreamkas.semver.prerelease.PreRelease
  *
  * Field examples for 1.5.8-beta.22+revision.2ed49def
  * Use [VersionBuilder.build] for instance
- * * [full] 1.5.8-beta.22+revision.2ed49def
- * * [base] 1.5.8
- * * [comparable] 1.5.8-beta.22
  * * [major] 1
  * * [minor] 5
  * * [patch] 8
  * * [preRelease] beta.22
  * * [metaData] revision.2ed49def
  */
-open class Version protected constructor(
-        open val full: String,
-        open val base: String,
-        open val comparable: String,
-        open val major: Long,
-        open val minor: Long,
-        open val patch: Long,
-        open val preRelease: PreRelease,
-        open val metaData: MetaData
+class Version internal constructor(
+        val major: Int,
+        val minor: Int = 0,
+        val patch: Int = 0,
+        val preRelease: PreRelease = PreRelease.EMPTY,
+        val metaData: MetaData = MetaData.EMPTY
 ) : Comparable<Version> {
 
+    val base: Version
+        get() = truncateToPatch()
+    val comparable: Version
+        get() = truncateToPreRelease()
+
     fun isPreRelease() = preRelease.preRelease != null
+    fun isRelease() = !isPreRelease()
     override fun compareTo(other: Version): Int {
         return VersionComparator.SEMVER.compare(this, other)
     }
 
+    fun truncateToMajor(): Version = Version(major)
+    fun truncateToMinor(): Version = Version(major, minor)
+    fun truncateToPatch(): Version = Version(major, minor, patch)
+    fun truncateToPreRelease(): Version = Version(major, minor, patch, preRelease)
+
+    fun gt(other: Version): Boolean = this > other
+    fun lt(other: Version): Boolean = this < other
+    fun le(other: Version): Boolean = this <= other
+    fun ge(other: Version): Boolean = this >= other
+
+    fun toComparableString(): String {
+        return "$major.$minor.$patch" + preRelease.toString()
+    }
+
     override fun toString(): String {
-        return full
+        return toComparableString() + metaData.toString()
     }
 
     override fun equals(other: Any?): Boolean {
@@ -60,4 +73,22 @@ open class Version protected constructor(
         return result
     }
 
+    companion object {
+        @JvmStatic
+        fun of(version: String): Version {
+            return VersionBuilder.build(version)
+        }
+
+        @JvmStatic
+        fun matches(version: String): Boolean {
+            return VersionBuilder.matches(version)
+        }
+
+        @JvmStatic
+        @JvmOverloads
+        fun of(major: Int, minor: Int = 0, patch: Int = 0): Version {
+            return Version(major, minor, patch);
+        }
+    }
 }
+

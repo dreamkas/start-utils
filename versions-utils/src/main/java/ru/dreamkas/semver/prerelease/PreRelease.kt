@@ -1,13 +1,13 @@
 package ru.dreamkas.semver.prerelease
 
-import org.apache.commons.lang3.StringUtils
-import java.util.*
+import java.util.ArrayList
 
 class PreRelease internal constructor(
-        val preRelease: String?,
-        val identifiers: List<PreReleaseId> = preRelease?.split(".")?.map {
-            if (StringUtils.isNumeric(it)) PreReleaseNumericId(it.toLong()) else PreReleaseStringId(it)
-        } ?: ArrayList<PreReleaseId>()) {
+        val preRelease: String? = null
+) {
+    val identifiers: List<PreReleaseId> = preRelease?.split(".")?.map {
+        it.toIntOrNull()?.let { number -> PreReleaseNumericId(number) } ?: PreReleaseStringId(it)
+    } ?: ArrayList<PreReleaseId>()
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -25,6 +25,10 @@ class PreRelease internal constructor(
     }
 
     override fun toString(): String {
-        return preRelease ?: ""
+        return preRelease?.let { "-$preRelease" } ?: ""
+    }
+
+    companion object {
+        val EMPTY = PreRelease()
     }
 }

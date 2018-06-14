@@ -1,7 +1,6 @@
 package ru.dreamkas.semver
 
 import ru.dreamkas.semver.exceptions.VersionFormatException
-import ru.dreamkas.semver.metadata.MetaData
 import ru.dreamkas.semver.prerelease.PreRelease
 import java.util.regex.Matcher
 import java.util.regex.Pattern
@@ -21,9 +20,13 @@ object VersionBuilder {
         (?<$full>
             (?<$comparable>
                 (?<$base>
-                    (?<$major>0|[1-9]+0*)\.
-                    (?<$minor>0|[1-9]+0*)\.
-                    (?<$patch>0|[1-9]+0*)
+                    (?<$major>0|[1-9]+0*)
+                    (?:
+                        \.(?<$minor>0|[1-9]+0*)
+                        (?:
+                            \.(?<$patch>0|[1-9]+0*)
+                        )?
+                    )?
                 )
                 (?:-(?<$preRelease>[\da-z\-]+(?:\.[\da-z\-]+)*))?
             )
@@ -49,7 +52,7 @@ object VersionBuilder {
         val matches = PATTERN.matcher(fullVersion)
         if (matches.matches()) {
             try {
-                return InternalVersion(matches)
+                return makeVersion(matches)
             } catch (e: NumberFormatException) {
                 throw VersionFormatException(fullVersion, e)
             }
@@ -75,7 +78,7 @@ object VersionBuilder {
      */
     @JvmStatic
     @JvmOverloads
-    fun build(major: Long = 0, minor: Long = 0, patch: Long = 0, preRelease: String = "", metaData: String = ""): Version {
+    fun build(major: Int = 0, minor: Int = 0, patch: Int = 0, preRelease: String = "", metaData: String = ""): Version {
         var version = "$major.$minor.$patch"
         if (preRelease.isNotEmpty()) version += "-$preRelease"
         if (metaData.isNotEmpty()) version += "+$metaData"
@@ -99,14 +102,18 @@ object VersionBuilder {
         return build(version)
     }
 
-    private class InternalVersion(matches: Matcher) : Version(
-            matches.group(full),
-            matches.group(base),
-            matches.group(comparable),
-            matches.group(major).toLong(), matches.group(minor).toLong(),
-            matches.group(patch).toLong(),
-            PreRelease(matches.group(preRelease)),
-            MetaData(matches.group(metaData))
-    )
+    @JvmStatic
+    fun matches(fullVersion: String) = PATTERN.matcher(fullVersion).matches()
+
+    private fun makeVersion(matches: Matcher): Version {
+        return Version(
+                matches.group(major).toInt(),
+                matches.group(minor)?.toInt() ?: 0,
+                matches.group(patch)?.toInt() ?: 0,
+                PreRelease(matches.group(preRelease)),
+                MetaData(matches.group(metaData))
+        )
+    }
+
 }
 

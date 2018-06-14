@@ -1,6 +1,4 @@
 ext {
-    jupiter_version = "5.0.0-M3"
-    log4j_version = "1.7.24"
     mockito_version = "1.10.19"
 }
 
@@ -10,12 +8,17 @@ buildscript {
         maven {
             url "https://plugins.gradle.org/m2/"
         }
+        mavenCentral()
+    }
+    ext {
+        jUnitVersion = "5.0.0"
+        jUnitPluginVersion = "1.0.0"
     }
     dependencies {
-        classpath files('libs/git-versioning-3.0.2.jar') //"gradle.plugin.com.zoltu.gradle.plugin:git-versioning:3.0.2"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.1.0"
-        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3"
-        classpath 'com.netflix.nebula:nebula-dependency-recommender:3.6.3'
+        classpath files('libs/git-versioning-3.0.2.jar')
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.1.60"
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.0"
+        classpath "org.junit.platform:junit-platform-gradle-plugin:${jUnitPluginVersion}"
     }
 }
 
@@ -25,21 +28,30 @@ allprojects {
     repositories {
         jcenter()
     }
-
     apply plugin: 'java'
     apply plugin: 'idea'
+    apply plugin: 'org.junit.platform.gradle.plugin'
 
     sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
     group = 'ru.dreamkas.utils'
     project.version = gitVersion
 }
+
 subprojects {
 
     apply from: '../publishing.gradle'
-    apply from: '../dependencies.gradle'
 
+    dependencies {
+        testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: jUnitVersion
+        testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: jUnitVersion
+        testCompile group: 'org.junit.platform', name: 'junit-platform-console', version: jUnitPluginVersion
+        testCompile group: 'org.junit.platform', name: 'junit-platform-runner', version: jUnitPluginVersion
+        testCompile group: 'org.mockito', name: 'mockito-all', version: mockito_version
+    }
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '3.2.1'
+    gradleVersion = '4.3.1'
 }

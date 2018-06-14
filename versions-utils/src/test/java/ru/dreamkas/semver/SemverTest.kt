@@ -1,6 +1,5 @@
 package ru.dreamkas.semver
 
-import org.apache.commons.lang3.ArrayUtils
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -148,8 +147,6 @@ internal class SemverTest {
     @DisplayName("Not correct versions")
     fun incorrectVersions() {
         incorrect("incorrect",
-                "1.0",
-                "1.0-alpha",
                 "10.3.8.55",
                 "1.0.99999999999999999999999999999999999",
                 "01.0.0",
@@ -161,7 +158,9 @@ internal class SemverTest {
                 "1.0.0-alpha.1+Test test",
                 "1.0.0-",
                 "1.0.0+",
-                "1.0.0-alpha+"
+                "1.0.0-alpha+",
+                "1.0.0-pre_release_id_with_underscores.1",
+                "1.0.0+meta_with_underscores"
         )
     }
 
@@ -193,7 +192,7 @@ internal class SemverTest {
     private fun incorrect(vararg versions: String) {
         Arrays.stream(versions).forEach { it ->
             try {
-                assertThrows<Throwable>(VersionFormatException::class.java) { build(it) }
+                assertThrows<VersionFormatException>(VersionFormatException::class.java) { build(it) }
             } catch (e: AssertionFailedError) {
                 throw AssertionFailedError(it, e)
             }
@@ -204,7 +203,7 @@ internal class SemverTest {
         for (i in 0..versions.size - 2) {
             assertTrue(versions[i + 1] > versions[i], "Expected " + versions[i + 1] + " > " + versions[i])
         }
-        ArrayUtils.reverse(versions)
+        versions.reverse()
         for (i in 0..versions.size - 2) {
             assertTrue(versions[i + 1] < versions[i], "Expected " + versions[i + 1] + " < " + versions[i])
         }
