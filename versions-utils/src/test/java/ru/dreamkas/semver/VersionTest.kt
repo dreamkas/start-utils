@@ -53,23 +53,15 @@ internal class VersionTest {
     @Test
     @DisplayName("Base version")
     fun baseVersionTest(): Stream<DynamicTest> = Stream.of(
-            DynamicTest.dynamicTest("Разные версии") {
-                assertEquals(Version.of("1.0.0"), Version.of("1.0.0-beta.1").base)
-            },
-            DynamicTest.dynamicTest("Одинаковые версии") {
-                assertEquals(Version.of("1.0.0"), Version.of("1.0.0").base)
-            }
+            DynamicTest.dynamicTest("Разные версии") { assertEquals(Version.of("1.0.0"), Version.of("1.0.0-beta.1").base) },
+            DynamicTest.dynamicTest("Одинаковые версии") { assertEquals(Version.of("1.0.0"), Version.of("1.0.0").base) }
     )
 
     @TestFactory
     @DisplayName("Comparable version")
     fun comparableVersionTest(): Stream<DynamicTest> = Stream.of(
-            DynamicTest.dynamicTest("Разные версии") {
-                assertEquals(Version.of("1.0.0-beta.1"), Version.of("1.0.0-beta.1+develop").comparable)
-            },
-            DynamicTest.dynamicTest("Одинаковые версии") {
-                assertEquals(Version.of("1.0.0-beta.1"), Version.of("1.0.0-beta.1").comparable)
-            }
+            DynamicTest.dynamicTest("Разные версии") { assertEquals(Version.of("1.0.0-beta.1"), Version.of("1.0.0-beta.1+develop").comparable) },
+            DynamicTest.dynamicTest("Одинаковые версии") { assertEquals(Version.of("1.0.0-beta.1"), Version.of("1.0.0-beta.1").comparable) }
 
     )
 

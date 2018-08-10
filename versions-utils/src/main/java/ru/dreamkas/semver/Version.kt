@@ -87,7 +87,7 @@ class Version internal constructor(
         @JvmStatic
         @JvmOverloads
         fun of(major: Int, minor: Int = 0, patch: Int = 0): Version {
-            return Version(major, minor, patch);
+            return Version(major, minor, patch)
         }
     }
 }

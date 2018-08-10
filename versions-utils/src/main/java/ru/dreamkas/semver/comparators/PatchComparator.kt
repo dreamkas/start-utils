@@ -2,10 +2,10 @@ package ru.dreamkas.semver.comparators
 
 import ru.dreamkas.semver.Version
 import java.io.Serializable
-import java.util.*
+import java.util.Comparator
 
 /**
- * Comparing forDreamkasVersion.minor]
+ * Comparing for [Version.patch]
  */
 internal class PatchComparator : Comparator<Version>, Serializable {
     override fun compare(o1: Version, o2: Version): Int {

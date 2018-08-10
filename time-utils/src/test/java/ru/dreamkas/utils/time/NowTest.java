@@ -15,9 +15,9 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class NowTest {
-    ZoneId zone = ZoneId.of("Etc/GMT-10");
-    LocalDate date = LocalDate.of(2016, Month.JANUARY, 1);
-    LocalTime time = LocalTime.of(12, 13, 14);
+   private ZoneId zone = ZoneId.of("Etc/GMT-10");
+   private LocalDate date = LocalDate.of(2016, Month.JANUARY, 1);
+   private LocalTime time = LocalTime.of(12, 13, 14);
 
     private void setUp(Instant instant) {
         Clock clock = Clock.fixed(instant, zone);

@@ -6,14 +6,14 @@ import java.util.regex.Matcher
 import java.util.regex.Pattern
 
 object VersionBuilder {
-    private val full = "full"
-    private val base = "base"
-    private val comparable = "comparable"
-    private val major = "major"
-    private val minor = "minor"
-    private val patch = "patch"
-    private val preRelease = "preRelease"
-    private val metaData = "metaData"
+    private const val full = "full"
+    private const val base = "base"
+    private const val comparable = "comparable"
+    private const val major = "major"
+    private const val minor = "minor"
+    private const val patch = "patch"
+    private const val preRelease = "preRelease"
+    private const val metaData = "metaData"
 
     private val PATTERN = Pattern.compile(
             """

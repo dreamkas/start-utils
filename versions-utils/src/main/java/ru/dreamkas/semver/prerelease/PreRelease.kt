@@ -7,7 +7,7 @@ class PreRelease internal constructor(
 ) {
     val identifiers: List<PreReleaseId> = preRelease?.split(".")?.map {
         it.toIntOrNull()?.let { number -> PreReleaseNumericId(number) } ?: PreReleaseStringId(it)
-    } ?: ArrayList<PreReleaseId>()
+    } ?: ArrayList()
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

@@ -1,3 +1,5 @@
 rootProject.name = 'start-utils'
 include 'time-utils'
 include 'versions-utils'
+include 'versios-utils-java'
+

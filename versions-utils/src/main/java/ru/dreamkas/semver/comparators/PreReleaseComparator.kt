@@ -2,7 +2,7 @@ package ru.dreamkas.semver.comparators
 
 import ru.dreamkas.semver.Version
 import java.io.Serializable
-import java.util.*
+import java.util.Comparator
 
 /**
  * Comparing for [Version.preRelease]
@@ -19,15 +19,15 @@ internal class PreReleaseComparator : Comparator<Version>, Serializable {
         else {
             val maxId = maxOf(firstSize, secondSize) - 1
             for (i in 0..maxId) {
-                val result = if (firstSize <= i) -1
-                else if (secondSize <= i) 1
-                else first.get(i).compareTo(second.get(i))
+                val result = when {
+                    firstSize <= i -> -1
+                    secondSize <= i -> 1
+                    else -> first[i].compareTo(second[i])
+                }
                 if (result != 0)
                     return result
             }
             return 0
         }
-
     }
-
 }

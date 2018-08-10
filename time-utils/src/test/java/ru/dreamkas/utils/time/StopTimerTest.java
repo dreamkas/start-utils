@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class StopTimerTest {
     private static final Duration N0 = Duration.ZERO;
     private static final Duration N1 = Duration.ofNanos(1);
-    StopTimer S;
+    private StopTimer S;
 
     @BeforeEach
     void setup() {

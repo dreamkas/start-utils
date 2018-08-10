@@ -35,10 +35,7 @@ public class StopTimer {
     }
 
     private long getCurrentTime() {
-        if (timeTestSupplier != null) {
-            return timeTestSupplier.get();
-        }
-        return System.nanoTime();
+        return timeTestSupplier != null ? timeTestSupplier.get() : System.nanoTime();
     }
 
     long getElapsedNanos() {
