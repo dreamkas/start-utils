@@ -42,12 +42,12 @@ public final class PreRelease {
 
     @Override
     public int hashCode() {
-        return preRelease.hashCode();
+        return identifiers.hashCode();
     }
 
     @Override
     public String toString() {
-        return preRelease == null ? "" : ("-" + preRelease);
+        return preRelease == null ? "" : ('-' + preRelease);
     }
 
     public List<PreReleaseId> getIdentifiers() {

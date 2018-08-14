@@ -28,6 +28,6 @@ public final class MetaData {
 
     @Override
     public String toString() {
-        return metaData == null ? "" : ("+" + metaData);
+        return metaData == null ? "" : ('+' + metaData);
     }
 }

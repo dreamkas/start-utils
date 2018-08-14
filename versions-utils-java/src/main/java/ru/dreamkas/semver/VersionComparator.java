@@ -5,7 +5,9 @@ import java.util.List;
 
 import ru.dreamkas.semver.prerelease.PreReleaseId;
 
-public class VersionComparator {
+final class VersionComparator {
+    private VersionComparator() {}
+
     private static final Comparator<Version> PRE_RELEASE_COMPARATOR = (v1, v2) -> {
         List<PreReleaseId> first = v1.getPreRelease().getIdentifiers();
         List<PreReleaseId> second = v2.getPreRelease().getIdentifiers();
@@ -28,7 +30,7 @@ public class VersionComparator {
         return 0;
     };
 
-    public static final Comparator<Version> SEMVER = Comparator.comparing(Version::getMajor)
+    static final Comparator<Version> SEMVER = Comparator.comparing(Version::getMajor)
         .thenComparing(Version::getMinor)
         .thenComparing(Version::getPatch)
         .thenComparing(PRE_RELEASE_COMPARATOR);

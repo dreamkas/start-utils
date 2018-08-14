@@ -8,8 +8,40 @@ public final class Version implements Comparable<Version> {
     private int major;
     private int minor;
     private int patch;
-    private PreRelease preRelease = PreRelease.EMPTY;
-    private MetaData metaData = MetaData.EMPTY;
+    private PreRelease preRelease;
+    private MetaData metaData;
+
+    public Version(int major, int minor, int patch) {
+        this(major, minor, patch, PreRelease.EMPTY, MetaData.EMPTY);
+    }
+
+    public Version(int major, int minor, int patch, PreRelease preRelease, MetaData metaData) {
+        this.major = major;
+        this.minor = minor;
+        this.patch = patch;
+        this.preRelease = preRelease;
+        this.metaData = metaData;
+    }
+
+    public static Version of(@NotNull String version) {
+        return VersionBuilder.build(version);
+    }
+
+    public static boolean matches(@NotNull String version) {
+        return VersionBuilder.matches(version);
+    }
+
+    public static Version of(int major, int minor, int patch) {
+        return new Version(major, minor, patch);
+    }
+
+    public static Version of(int major, int minor) {
+        return new Version(major, minor, 0);
+    }
+
+    public static Version of(int major) {
+        return new Version(major, 0, 0);
+    }
 
     public final Version getBase() {
         return truncateToPatch();
@@ -64,11 +96,11 @@ public final class Version implements Comparable<Version> {
     }
 
     public final String toComparableString() {
-        return major + "." + minor + "." + patch + preRelease.toString();
+        return major + "." + minor + "." + patch + preRelease;
     }
 
     public String toString() {
-        return toComparableString() + metaData.toString();
+        return toComparableString() + metaData;
     }
 
     public boolean equals(Object other) {
@@ -114,38 +146,6 @@ public final class Version implements Comparable<Version> {
 
     public final MetaData getMetaData() {
         return metaData;
-    }
-
-    public Version(int major, int minor, int patch) {
-        this(major, minor, patch, PreRelease.EMPTY, MetaData.EMPTY);
-    }
-
-    public Version(int major, int minor, int patch, PreRelease preRelease, MetaData metaData) {
-        this.major = major;
-        this.minor = minor;
-        this.patch = patch;
-        this.preRelease = preRelease;
-        this.metaData = metaData;
-    }
-
-    public static Version of(@NotNull String version) {
-        return VersionBuilder.build(version);
-    }
-
-    public static boolean matches(@NotNull String version) {
-        return VersionBuilder.matches(version);
-    }
-
-    public static Version of(int major, int minor, int patch) {
-        return new Version(major, minor, patch);
-    }
-
-    public static Version of(int major, int minor) {
-        return new Version(major, minor, 0);
-    }
-
-    public static Version of(int major) {
-        return new Version(major, 0, 0);
     }
 }
 

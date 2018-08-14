@@ -9,6 +9,7 @@ import org.junit.jupiter.api.TestFactory;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class VersionTest {
@@ -117,5 +118,11 @@ public class VersionTest {
         assertTrue(Version.matches("9.5.4-beta.1"));
         assertTrue(Version.matches("9.5.4-beta.1+meta"));
         assertFalse(Version.matches("9.5.4.2"));
+    }
+
+    @Test
+    public void hashCodeTest() {
+        assertNotEquals(Version.of(9).hashCode(), Version.of("9.0.0-beta.1").hashCode(), "Hashcode for different prerelease");
+        assertEquals(Version.of(9).hashCode(), Version.of("9.0.0").hashCode(), "Hashcode for same prerelease");
     }
 }
