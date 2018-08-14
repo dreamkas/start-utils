@@ -13,6 +13,8 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
+import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl;
+
 /**
  * Переводит одни типы дат в другие
  */
@@ -71,5 +73,13 @@ public class DateConverters {
         return toXMLGregorianCalendar(LocalDateTime.of(date, LocalTime.MIN));
     }
 
+    public static XMLGregorianCalendar toXMLGregorianCalendarFast(LocalDateTime date) {
+        GregorianCalendar calendar = new GregorianCalendar();
+        calendar.setTime(toDate(date));
+        return new XMLGregorianCalendarImpl(calendar);
+    }
 
+    public static XMLGregorianCalendar toXMLGregorianCalendarFast(LocalDate date) {
+        return toXMLGregorianCalendarFast(LocalDateTime.of(date, LocalTime.MIN));
+    }
 }
