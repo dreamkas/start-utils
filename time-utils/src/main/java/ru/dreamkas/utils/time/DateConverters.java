@@ -13,12 +13,20 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl;
-
 /**
  * Переводит одни типы дат в другие
  */
 public class DateConverters {
+    private static DatatypeFactory datatypeFactory;
+
+    static {
+        try {
+            datatypeFactory = DatatypeFactory.newInstance();
+        } catch (DatatypeConfigurationException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
     public static Date toDate(LocalTime localTime) {
         return localTime != null ? toDate(localTime.atDate(Now.localDate())) : null;
     }
@@ -60,26 +68,12 @@ public class DateConverters {
     }
 
     public static XMLGregorianCalendar toXMLGregorianCalendar(LocalDateTime date) {
-        try {
-            GregorianCalendar calendar = new GregorianCalendar();
-            calendar.setTime(toDate(date));
-            return DatatypeFactory.newInstance().newXMLGregorianCalendar(calendar);
-        } catch (DatatypeConfigurationException e) {
-            throw new IllegalStateException(e);
-        }
+        GregorianCalendar calendar = new GregorianCalendar();
+        calendar.setTime(toDate(date));
+        return datatypeFactory.newXMLGregorianCalendar(calendar);
     }
 
     public static XMLGregorianCalendar toXMLGregorianCalendar(LocalDate date) {
         return toXMLGregorianCalendar(LocalDateTime.of(date, LocalTime.MIN));
-    }
-
-    public static XMLGregorianCalendar toXMLGregorianCalendarFast(LocalDateTime date) {
-        GregorianCalendar calendar = new GregorianCalendar();
-        calendar.setTime(toDate(date));
-        return new XMLGregorianCalendarImpl(calendar);
-    }
-
-    public static XMLGregorianCalendar toXMLGregorianCalendarFast(LocalDate date) {
-        return toXMLGregorianCalendarFast(LocalDateTime.of(date, LocalTime.MIN));
     }
 }
