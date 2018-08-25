@@ -76,4 +76,8 @@ public class DateConverters {
     public static XMLGregorianCalendar toXMLGregorianCalendar(LocalDate date) {
         return toXMLGregorianCalendar(LocalDateTime.of(date, LocalTime.MIN));
     }
+
+    public static XMLGregorianCalendar toXMLGregorianCalendar(ZonedDateTime date) {
+        return datatypeFactory.newXMLGregorianCalendar(GregorianCalendar.from(date));
+    }
 }
