@@ -24,6 +24,7 @@ internal class VersionTest {
         assertEquals(Version.of("9.1"), Version.of(9, 1))
         assertEquals(Version.of("9"), Version.of(9))
 
+        assertEquals(Version.of("3.0.2070"), Version.of(3,0,2070))
     }
 
     @Test
