@@ -48,4 +48,9 @@ public class Now {
     public static Date date() {
         return DateConverters.toDate(zonedDateTime());
     }
+
+    public static int getDayOfWeek() {
+        int dow = localDate().getDayOfWeek().getValue() + 1;
+        return dow > 7 ? 1 : dow;
+    }
 }
