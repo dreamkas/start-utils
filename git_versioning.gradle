@@ -7,10 +7,7 @@ ZoltuGitVersioning {
 }
 
 def versionInfo = ZoltuGitVersioning.versionInfo
-ext.gitVersion = "${versionInfo.major}.${versionInfo.minor}"
+ext.gitVersion = "${versionInfo.major}.${versionInfo.minor}.${versionInfo.commitCount}"
 if (versionInfo.tags != null) {
-    ext.gitVersion += ".0-${versionInfo.tags}"
-}
-if (versionInfo.commitCount > 0 || versionInfo.tags == null) {
-    ext.gitVersion += ".${versionInfo.commitCount}"
+    ext.gitVersion += "-${versionInfo.tags}"
 }
