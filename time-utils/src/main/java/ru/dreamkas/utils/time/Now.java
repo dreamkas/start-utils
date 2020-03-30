@@ -35,6 +35,7 @@ public class Now {
         return LocalTime.now(ClockProvider.get());
     }
 
+    @SuppressWarnings("unused")
     public static Instant instant() {
         return Instant.now(ClockProvider.get());
     }
@@ -49,6 +50,19 @@ public class Now {
         return DateConverters.toDate(zonedDateTime());
     }
 
+    /**
+     * Возвращает номер дня недели в формате {@link java.util.Calendar}<br>
+     *      <code>SUNDAY = 1, </code><br>
+     *      <code>MONDAY = 2, </code><br>
+     *      <code>TUESDAY = 3, </code><br>
+     *      <code>WEDNESDAY = 4, </code><br>
+     *      <code>THURSDAY = 5, </code><br>
+     *      <code>FRIDAY = 6, </code><br>
+     *      <code>SATURDAY = 7</code>
+     *
+     * @return int
+     */
+    @SuppressWarnings("unused")
     public static int getDayOfWeek() {
         int dow = localDate().getDayOfWeek().getValue() + 1;
         return dow > 7 ? 1 : dow;
