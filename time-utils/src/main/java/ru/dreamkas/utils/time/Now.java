@@ -59,7 +59,6 @@ public class Now {
      *      <code>THURSDAY = 5, </code><br>
      *      <code>FRIDAY = 6, </code><br>
      *      <code>SATURDAY = 7</code>
-     *
      * @return int
      */
     @SuppressWarnings("unused")
