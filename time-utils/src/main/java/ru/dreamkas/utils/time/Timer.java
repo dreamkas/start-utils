@@ -130,4 +130,9 @@ public class Timer {
     public String getRemainTimeAsString() {
         return DurationFormatUtils.formatDurationHMS(getRemain().toMillis());
     }
+
+    public void expire() {
+        stopTimer.setStartTime(System.nanoTime());
+        initiallyExpired = true;
+    }
 }

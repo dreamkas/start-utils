@@ -61,4 +61,8 @@ public class StopTimer {
     public String getElapsedTimeAsString() {
         return DurationFormatUtils.formatDurationHMS(getElapsed().toMillis());
     }
+
+    public void setStartTime(long value) {
+        startTime = value;
+    }
 }
